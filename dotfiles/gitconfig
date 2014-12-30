@@ -1,0 +1,65 @@
+[user]
+	email = derrick.parkhurst@gmail.com
+	name = Derrick Parkhurst
+[color]
+  ui = true
+  sh = auto
+[push]
+  default = simple
+[core]
+  excludesfile = ~/.gitexcludes
+[credential]
+  helper = osxkeychain
+[help]
+  autocorrect = 1
+[alias]
+  # Favorites
+  b = branch
+  aa = add --all
+  ra = reset .
+
+  # Emails and Authors
+  fsearch  = ! git ls-files | grep
+  authors  = ! git log --all --format='%aN' | sort -u
+  emails   = ! git log --all --format='%cE' | sort -u
+  standup  = ! git log --since yesterday --author `git config user.email` --pretty=short
+
+  # Master is now a verb
+  master = checkout master
+
+  # Pushing and pulling
+  ps = push
+
+  # Committing
+  cm      = commit -m
+  amend   = commit --amend
+  coa     = ! git checkout . && git status
+  famend  = ! git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+
+  # Diffing
+  d = diff
+  ds = diff --staged
+
+  # Logging and Graphing
+  ls = log --pretty='format:%Cred%h%Creset %Cblue%ad%Cred%d %Creset%s%Cgreen [%cn]%Creset' --decorate --date=short
+  lsv = ! git ls --numstat
+  graph = log --graph --pretty='format:%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset %C(blue){%an}%Creset' --abbrev-commit --date=relative
+
+  # Amending and resetting
+  fixlast = reset --soft HEAD^
+  rollback = reset –hard HEAD@{1}
+
+  # Diff of current branch to other branches.
+  # Hope to move these into their own shell scripts
+  # for better customizing
+  dpr = ! git diff origin/$(git-current-branch)..
+  npr = ! git log origin/$(git-current-branch).. --oneline
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
+[include]
+  path = .gitconfig.local
+[filter "media"]
+  clean = git media clean %f
+  smudge = git media smudge %f
+  required = true
+[color "sh"]
+  dirty = red

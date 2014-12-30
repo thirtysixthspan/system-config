@@ -1,0 +1,59 @@
+
+tmux_name_window_cwd() {
+  if [ "$PWD" != "$LPWD" ]; then
+    LPWD="$PWD"; tmux rename-window ${PWD//*\//};
+  fi
+}
+export PROMPT_COMMAND=tmux_name_window_cwd
+
+function _git_prompt() {
+    local git_status=$(git status 2>&1)
+    if [[ $git_status =~ "Not a git repository" ]]; then return; fi
+
+        local status=""
+        if [[ $git_status =~ Changes\ not\ staged ]]; then
+            status="$status:changes"
+        fi
+        if [[ $git_status =~ Untracked\ files ]]; then
+            status="$status:untracked"
+        fi
+        if [[ $git_status =~ Changes\ to\ be\ committed ]]; then
+            status="$status:staged"
+        fi
+        if [[ $status == '' ]]; then
+            status=":clean"
+        fi
+
+        if [[ $git_status =~ On\ branch\ ([^[:space:]]+) ]]; then
+            branch=${BASH_REMATCH[1]}
+        else
+            # Detached HEAD.  (branch=HEAD is a faster alternative.)
+            branch="(`git describe --all --contains --abbrev=4 HEAD 2> /dev/null || echo HEAD`)"
+        fi
+        echo -en "git:$branch$status"
+
+}
+
+pdir() {
+  if [[ $(history 1) =~ cd ]]; then
+    ls -F | \
+    awk -v w="$(expr `tput cols` / 25 )" \
+        '{ \
+          if (NR%w==0) { print "" } \
+          printf "%-25.22s", $1 \
+        }'
+    echo -ne "\n\r"
+  fi
+}
+
+file_count() {
+  /bin/ls -1 | /usr/bin/wc -l | /usr/bin/sed 's: ::g'
+}
+
+file_size() {
+  /bin/ls -lah | /usr/bin/grep -m 1 total | /usr/bin/sed 's/total //'
+}
+
+PS1="\n\[\e[30;1m\]\[\016\]l\[\017\](\[\e[34;1m\]\u\[\e[30;1m\])-(\[\e[34;1m\]\h\[\e[30;1m\])-(\[\e[34;1m\]\@ \d\[\e[30;1m\])\[\e[30;1m\]\[\e[30;1m\]
+\$(pdir)\[\016\]m\[\017\](\[\[\e[32;1m\]\w\[\e[30;1m\])-(\[\e[32;1m\]\$(file_count) files, \$(file_size)b\[\e[30;1m\])-(\[\e[32;1m\]\$(_git_prompt)\[\e[30;1m\])
+--> \[\e[37;1m\]"

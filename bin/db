@@ -1,0 +1,75 @@
+#!/usr/bin/env ruby
+
+exit if ARGV.size<1
+
+class DB
+
+  def initialize
+    @databases = %w{mysql memcache redis postgres}
+  end
+
+  def running
+    @databases.each do |database|
+      puts "#{database}: #{`pgrep -l #{database}`.chomp}"
+    end
+  end
+
+  def start_redis
+    fork { exec 'redis-server /usr/local/etc/redis.conf &' }
+  end
+
+  def start_mysql
+    fork { exec 'mysql.server start' }
+  end
+
+  def start_memcache
+    fork { exec '/usr/local/opt/memcached/bin/memcached -l localhost &' }
+  end
+
+  def start_postgres
+    fork { exec 'postgres -D /usr/local/var/postgres' }
+  end
+
+  def start(*args)
+    if args.any?
+      send("start_#{args.first}")
+    else
+      @databases.each do |database|
+        send("start_#{database}")
+      end
+    end
+  end
+
+  def kill(database)
+    puts "#{database}: #{`pgrep #{database} | xargs kill -9`.chomp}"
+  end
+
+  def stop_mysql
+    puts "mysql: #{`mysql.server stop`}"
+  end
+
+  def stop_redis
+    kill('redis')
+  end
+
+  def stop_memcache
+    kill('memcache')
+  end
+
+  def stop_postgres
+    kill('postgres')
+  end
+
+  def stop(*args)
+    if args.any?
+      send("stop_#{args.first}")
+    else
+      @databases.each do |database|
+        send("stop_#{database}")
+      end
+    end
+  end
+
+end
+
+DB.new.send(*ARGV)

@@ -1,0 +1,100 @@
+#!/usr/bin/env ruby
+
+require 'pp'
+require 'yaml'
+
+class QA
+
+  def initialize
+    @env= <<-SHELL
+
+    SHELL
+  end
+
+  def mysql_databases
+    puts mysql("show databases;")
+  end
+
+  def mysql_create_database(db)
+    puts mysql("create database #{db};")
+  end
+
+  def mysql_delete_database(db)
+    puts mysql("drop database if exists #{db};")
+  end
+
+  def memcache_clear
+    env_exec <<-SHELL
+      echo 'flush_all' | nc localhost 11211
+    SHELL
+  end
+
+  def memcache_keys
+    slabs = `echo 'stats items' | nc 127.0.0.1 11211 - | awk -F  ":" '{ print $2 }'`.split.uniq
+    slabs.each do |slab|
+      system("echo 'stats cachedump #{slab} 10000' | nc 127.0.0.1 11211 - ")
+    end
+  end
+
+  def memcache_key(key)
+    system("echo 'get #{key}' | nc 127.0.0.1 11211 - ")
+  end
+
+  def memcache_delete_key(key)
+    system("echo 'delete #{key}' | nc 127.0.0.1 11211 - ")
+  end
+
+  def ruby_analyze(path)
+    puts "Running Reek Gem on #{path}"
+    env_system("reek #{path}")
+    puts "\n\n"
+    puts "Running Flog Gem on #{path}"
+    env_system("flog #{path}")
+  end
+
+  def git_blame_history(sha, line, file)
+    attributes = [sha]
+    loop do
+      break unless attributes && attributes.first && attributes.first.size > 5
+      blame = `git blame #{attributes.first}^ -- #{file} | grep '#{line}'`.chomp
+      puts blame
+      attributes = blame.split(/\s/)
+    end
+  end
+
+  private
+
+
+  def mysql(sql)
+    `mysql -uroot -e "#{sql}"`
+  end
+
+  def env_exec(command)
+    puts "Runnining Commands:"
+    puts command
+    exec(@env+command)
+  end
+
+  def env_system(command)
+    puts "Runnining Commands:"
+    puts command
+    system(@env+command)
+  end
+
+  def silent_env_exec(command)
+    exec(@env+command)
+  end
+
+  def git_repository_root_dir
+    `git rev-parse --show-toplevel`.chomp
+  end
+
+end
+
+
+if ARGV.size<1
+  puts "QA [command]"
+  exit
+end
+
+QA.new.send(*ARGV)
