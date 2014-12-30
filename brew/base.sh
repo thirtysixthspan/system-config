@@ -40,5 +40,7 @@ brew install homebrew/dupes/make
 brew install homebrew/dupes/unzip
 brew install openssl
 
+brew install imagemagick
+
 # Remove outdated versions from the cellar.
 brew cleanup
