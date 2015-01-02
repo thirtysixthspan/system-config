@@ -7,3 +7,5 @@ system-config/rvm/base.sh
 rcup -d system-config/dotfiles -B Laptop -v
 
 system-config/sublime/install.sh
+
+system-config/karabiner/install.sh
