@@ -12,7 +12,7 @@
 			<key>settings</key>
 			<dict>
 				<key>background</key>
-				<string>#141414</string>
+				<string>#14ff14</string>
 				<key>caret</key>
 				<string>#A7A7A7</string>
 				<key>foreground</key>
@@ -24,6 +24,19 @@
 				<key>selection</key>
 				<string>#DDF0FF33</string>
 			</dict>
+		</dict>
+		<dict>
+		  <key>name</key>
+		  <string>Block Cursor</string>
+		  <key>scope</key>
+		  <string>block_cursor</string>
+		  <key>settings</key>
+		  <dict>
+		      <key>foreground</key>
+		      <string>#000000</string>
+		      <key>background</key>
+		      <string>#FF1111</string>
+		  </dict>
 		</dict>
 		<dict>
 			<key>name</key>
