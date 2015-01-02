@@ -6,11 +6,6 @@
 // https://packagecontrol.io/packages/GitGutter
 // https://github.com/alienhard/SublimeAllAutocomplete
 
-// Keymaps
-// https://github.com/MiroHibler/sublime-keymaps
-{ "keys": ["ctrl+/"], "command": "find_keymap" },
-{ "keys": ["ctrl+?"], "command": "cheat_sheet" },
-
 // Basics
   { "keys": ["super+shift+n"], "command": "new_window" },
   { "keys": ["super+shift+w"], "command": "close_window" },
@@ -72,21 +67,91 @@
   { "keys": ["ctrl+g", "b"], "command": "blame" },
   { "keys": ["ctrl+g", "h"], "command": "history" },
 
-// Documentation
-// https://github.com/kemayo/sublime-text-2-goto-documentation
-  { "keys": ["ctrl+h"], "command": "goto_documentation" },
+// CTags
+// https://github.com/SublimeText/CTags
+  { "keys": ["ctrl+t", "t"], "command": "navigate_to_definition" },
+  { "keys": ["ctrl+t", "f"], "command": "search_for_definition" },
+  { "keys": ["ctrl+t", "r"], "command": "rebuild_tags" },
 
-// Rubocop
-// https://github.com/pderichs/sublime_rubocop
-// https://github.com/jisaacks/ChainOfCommand
+
+// Shell Command
+// https://github.com/markbirbeck/sublime-text-shell-command
+  { "keys": ["ctrl+c", "c"], "command": "shell_command" },
   {
-    "keys": ["ctrl+l", "r"],
-    "command": "chain",
+    "keys": ["c"],
+    "command": "shell_command_refresh",
+    "context": [{ "key": "setting.ShellCommand" }]
+  },
+  {
+    "keys": ["ctrl+c", "r"],
+    "command": "shell_command",
     "args": {
-      "commands": [
-        ["rubocop_check_single_file"],
-        ["hide_panel", {"cancel": true}]
-      ]
+      "command_prefix": "source $HOME/.bashrc && rvm-auto-ruby -S",
+      "prompt": "Shell Command"
+    }
+  },
+  {
+    "keys": ["ctrl+c", "t"],
+    "command": "shell_command",
+    "args": {
+      "command": "echo \"Running Rake in $PWD\" && source $HOME/.bashrc && rvm-auto-ruby -S bundle exec rake"
+    }
+  },
+  { // Process list
+    "keys": ["ctrl+c", "p"],
+    "command": "shell_command",
+    "args": {
+      "command": "ps xcro user,pid,%cpu,cputime,%mem,command | head -n 28",
+    }
+  },
+  { // Send SIGKILL to a process number highlighted
+    // in a Shell Command Window
+    "keys": ["k"],
+    "command": "shell_command",
+    "args": {
+      "command": "kill -9",
+      "region": "arg"
+    },
+    "context": [{ "key": "setting.ShellCommand" }]
+  },
+
+// File Browser
+// https://github.com/aziz/SublimeFileBrowser
+  {
+    "keys": ["ctrl+d"],
+    "command": "dired",
+    "args": {
+      "immediate": true,
+      "single_pane": true,
+      "other_group": "left",
+      "project": true
+    }
+  },
+
+// Google Search
+// https://github.com/nwjlyons/google-search
+  { "keys": ["ctrl+w", "g"], "command": "google_search" },
+
+// Goto Documentation
+// https://github.com/kemayo/sublime-text-2-goto-documentation
+  { "keys": ["ctrl+w", "h"], "command": "goto_documentation" },
+
+// Open URL
+// https://github.com/noahcoad/open-url/tree/st3
+  { "keys": ["ctrl+w", "o"], "command": "open_url" },
+
+// HTTP Requester
+// https://github.com/braindamageinc/SublimeHttpRequester
+  { "keys": ["ctrl+w", "e"], "command": "http_requester" },
+
+// Markdown preview
+// https://github.com/revolunet/sublimetext-markdown-preview
+  {
+    "keys": ["ctrl+m"],
+    "command": "markdown_preview",
+    "args": {
+      "target": "browser",
+      "parser": "github"
     }
   },
 
@@ -102,21 +167,32 @@
   { "keys": ["ctrl+s", "d"], "command": "sql_desc" },
 
 
-// Gem Browser
-// https://github.com/NaN1488/sublime-gem-browser
-  { "keys": ["ctrl+r", "g"], "command": "list_gems" },
+// BuildView
+// https://github.com/rctay/sublime-text-2-buildview
+  {
+    "keys": ["super+b"],
+    "command": "build",
+    "context": [{
+      "key": "build_fake",
+      "operator": "equal",
+      "operand": true
+    }]
+  },
 
-// HTTP Requester
-// https://github.com/braindamageinc/SublimeHttpRequester
-{ "keys": ["ctrl+w", "e"], "command": "http_requester" },
 
-// Google Search
-// https://github.com/nwjlyons/google-search
-{ "keys": ["ctrl+w", "g"], "command": "google_search" },
-
-// open-url
-// https://github.com/noahcoad/open-url/tree/st3
-{ "keys": ["ctrl+w", "o"], "command": "open_url" },
+// Rubocop
+// https://github.com/pderichs/sublime_rubocop
+// https://github.com/jisaacks/ChainOfCommand
+  {
+    "keys": ["ctrl+l", "r"],
+    "command": "chain",
+    "args": {
+      "commands": [
+        ["rubocop_check_single_file"],
+        ["hide_panel", {"cancel": true}]
+      ]
+    }
+  },
 
 // JSLint
 // https://github.com/darrenderidder/Sublime-JSLint
@@ -132,67 +208,31 @@
     }
   },
 
-// BuildView
-// https://github.com/rctay/sublime-text-2-buildview
-  { "keys": ["super+b"], "command": "build",
-    "context": [{"key": "build_fake", "operator":"equal", "operand":true}]
-  },
-
-// Markdown preview
-// https://github.com/revolunet/sublimetext-markdown-preview
-  { "keys": ["alt+m"], "command": "markdown_preview",
-      "args": {"target": "browser", "parser":"markdown"}
-  },
-
 // RSpec
 // https://github.com/SublimeText/RSpec
   { "keys": ["super+period"], "command": "open_rspec_file", "args": {} },
 
-// File Browser
-// https://github.com/aziz/SublimeFileBrowser
-{
-  "keys": ["alt+d"],
-  "command": "dired",
-  "args": {
-    "immediate": true,
-    "single_pane": true,
-    "other_group": "left",
-    "project": true
-  }
-},
+// Gem Browser
+// https://github.com/NaN1488/sublime-gem-browser
+  { "keys": ["ctrl+r", "g"], "command": "list_gems" },
 
 // Vim mode
 // https://github.com/guillermooo/Vintageous
+// https://github.com/karlhorky/BlockCursorEverywhere
   { "keys": ["ctrl+alt+v"], "command": "toggle_vintageous" },
-
-
-// Shell Command
-// https://github.com/markbirbeck/sublime-text-shell-command
-  { "keys": ["ctrl+c", "c"], "command": "shell_command" },
-
   {
-    "keys": ["ctrl+c", "r"],
-    "command": "shell_command",
+    "keys": ["j", "k"],
+    "command": "_enter_normal_mode",
     "args": {
-      "command_prefix": "source $HOME/.bashrc && rvm-auto-ruby -S",
-      "prompt": "Shell Command"
-    }
-  },
-
-  {
-    "keys": ["ctrl+c", "t"],
-    "command": "shell_command",
-    "args": {
-      "command": "echo \"Running Rake in $PWD\" && source $HOME/.bashrc && rvm-auto-ruby -S bundle exec rake"
-    }
+      "mode": "mode_insert"
+    },
+    "context": [{"key": "vi_insert_mode_aware"}]
   },
 
 
-// CTags
-// https://github.com/SublimeText/CTags
-
-  { "keys": ["ctrl+t", "t"], "command": "navigate_to_definition" },
-  { "keys": ["ctrl+t", "f"], "command": "search_for_definition" },
-  { "keys": ["ctrl+t", "r"], "command": "rebuild_tags" }
+// Keymaps
+// https://github.com/MiroHibler/sublime-keymaps
+  { "keys": ["ctrl+?"], "command": "cheat_sheet" },
+  { "keys": ["ctrl+/"], "command": "find_keymap" },
 
 ]
