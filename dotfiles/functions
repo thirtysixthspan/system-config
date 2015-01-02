@@ -1,1 +1,33 @@
 function who_wrote_this_code { find $1 \( ! -regex '.*/\..*' \) -name '*.rb' -type f -print -exec git blame '{}' \; | ruby -pe "sub /(^.*\((.*?)\s+2.*$)/, '\2'" | egrep -vE '[[:punct:][:digit:]]' | sort | uniq -c | sort -nr; }
+
+# grep history for 10 most common similar commands
+# usage:
+#  Most frequent command in recent history
+#   ghf 
+#  Most frequent instances of {command} in all history
+#   ghf {command}
+#  Execute {command-number}
+#   ghf {command-number}
+#  Execute {command-number} after a call to ghf
+#   !! {command-number} 
+function latest-history { history | tail -n 50 ; }
+function grepped-history { history | grep $1 ; }
+function unique-history { awk '{for (i=2; i<NF; i++) printf $i " "; print $NF}' | sort | uniq -c | sort -r | head -n 10 | awk '{printf NR " "; for (i=2; i<NF; i++) printf $i " "; print $NF}' ; }
+function ghf { 
+
+if [ $# -eq 0 ]
+  then
+    latest-history | unique-history
+fi
+
+if [ $# -eq 1 ]
+  then
+    grepped-history $1 | unique-history
+fi
+
+if [ $# -eq 2 ]
+  then
+    `grepped-history $1 | unique-history | grep ^$2 | awk '{for (i=2; i<NF; i++) printf $i " "; print $NF}'`;
+fi
+
+}
