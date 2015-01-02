@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<root>
+  <item>
+    <name>Mouse Navigation</name>
+
+    <item>
+      <name>Mouse Keys scroll direction: natural</name>
+      <appendix>(Enable this setting if your scroll direction of trackpad/mouse is natural.)</appendix>
+      <identifier essential="true">parameter.mouse_key_scroll_natural_direction</identifier>
+    </item>
+
+    <item>
+      <name>Mouse Navigation</name>
+      <appendix>You can scroll by SEMICOLON+hjkl keys.</appendix>
+      <appendix>hit the SPACE key to accelerate.</appendix>
+      <identifier>remap.mouse_navigation</identifier>
+      <autogen>
+        __KeyOverlaidModifier__
+        KeyCode::SEMICOLON, ModifierFlag::NONE,
+
+        @begin
+        KeyCode::VK_CONFIG_SYNC_KEYDOWNUP_notsave_mouse_navigation,
+        @end
+
+        @begin
+        KeyCode::SEMICOLON,
+        @end
+      </autogen>
+    </item>
+    <item hidden="true">
+      <identifier vk_config="true">notsave.mouse_navigation</identifier>
+
+      {{ MOUSE_KEYS_MODE_2_EXTRA }}
+
+      <autogen>
+        __BlockUntilKeyUp__ KeyCode::SEMICOLON
+      </autogen>
+
+        <autogen>__KeyToKey__ KeyCode::SPACE, KeyCode::VK_MOUSEKEY_HIGHSPEED</autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::J,
+          KeyCode::VK_MOUSEKEY_SCROLL_DOWN,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::K,
+          KeyCode::VK_MOUSEKEY_SCROLL_UP,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::H,
+          KeyCode::VK_MOUSEKEY_SCROLL_LEFT,
+        </autogen>
+        <autogen>
+          __KeyToKey__
+          KeyCode::K,
+          KeyCode::VK_MOUSEKEY_SCROLL_RIGHT,
+        </autogen>
+
+    </item>
+
+  </item>
+</root>

@@ -12,6 +12,7 @@ apps=(
   sublime-text3
   virtualbox
   skype
+  karabiner
 )
 brew tap caskroom/versions
 brew cask install --appdir="/Applications" ${apps[@]}
