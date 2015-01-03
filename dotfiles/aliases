@@ -1,6 +1,6 @@
 
 
-alias hg='history | grep '
+alias gh='history | grep '
 alias pp='ps ax | grep -v grep | grep '
 
 alias be='bundle exec'
