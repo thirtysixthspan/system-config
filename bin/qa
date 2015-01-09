@@ -94,6 +94,15 @@ module D360
     end
   end
 
+  def git_develop
+    repos = Dir.glob("#{repos_base}/*")
+
+    repos.each do |repo|
+      puts "Updating bundle in #{repo}"
+      env_system("cd #{repo} && git checkout develop && git up")
+    end
+  end
+
   def update_gemfile
     original = Regexp.escape "gem 'rmagick', '~> 2.13.2'"
     replacement = Regexp.escape "gem 'rmagick', '~> 2.13.2', :require => false"
@@ -116,6 +125,24 @@ module D360
     EOC
     env_exec(commands)
   end
+
+  def test_without_features
+    commands = <<-EOC
+      rm -f log/test.log
+      rm -rf spec/reports/*
+      rm -f spec/dummy/log/*
+      rm -f ./../htmlreports/Rails_Best_Practices/spec/dummy/log/test.log
+      rm -f ./../htmlreports/Rails_Best_Practices/test/dummy/log/test.log
+      mkdir -p log
+      rm -f log/test_setup.log
+      RAILS_ENV=test bundle exec rake db:drop > log/test_setup.log
+      RAILS_ENV=test bundle exec rake db:create >> log/test_setup.log
+      RAILS_ENV=test bundle exec rake db:schema:load >> log/test_setup.log
+      bundle exec rspec --format documentation `find spec | grep _spec.rb | grep -v features | xargs`
+    EOC
+    env_exec(commands)
+  end
+
 
   private
 
