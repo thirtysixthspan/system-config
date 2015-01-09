@@ -27,6 +27,9 @@
   # Master is now a verb
   master = checkout master
 
+  #pulling
+  up = ! git remote update -p; git merge --ff-only @{u}
+
   # Pushing and pulling
   ps = push
 
