@@ -9,8 +9,24 @@ module D360
    '/Users/dparkhurst/dev/coef'
   end
 
-  def repos_base
+  def core_repos_base
+    "#{app_base}/d360api/repos"
+  end
+
+  def engine_repos_base
     "#{app_base}/d360/repos"
+  end
+
+  def doc_repos_base
+    "#{app_base}/coef-doc-api/repos"
+  end
+
+  def repos
+    [engine_repos_base, core_repos_base, doc_repos_base]
+      .map { |base| Dir.glob("#{base}/*") }
+      .flatten
+      .reject { |dir| dir.match(/\/log/) }
+      .select { |file| File.directory? file }
   end
 
   def shared_base
@@ -48,13 +64,21 @@ module D360
   def start
     launch_d360
     launch_d360api
+    launch_doc_api
+    launch_thinking_sphinx
   end
 
   def stop
     command = <<-EOC
-      ps ax | grep 'script/rails server' | grep -v grep | awk '{ print $1 };'
+      ps ax | grep '/rails server' | grep -v grep | awk '{ print $1 };'
     EOC
     servers = `#{command}`.split(/\n/)
+
+    command = <<-EOC
+      ps ax | grep 'searchd' | grep -v grep | awk '{ print $1 };'
+    EOC
+    servers += `#{command}`.split(/\n/)
+
     if servers.empty?
       puts "No servers running to kill"
       exit
@@ -67,7 +91,7 @@ module D360
   end
 
   def link_test_configuration_files
-    repos = Dir.glob("#{repos_base}/*")
+    repos = Dir.glob("#{engine_repos_base}/*")
       .select{ |repos| !repos.match(/dealer360/) }
       .select{ |repos| !repos.match(/d360-core-domain/) }
       .map{ |repo| repo.gsub(/^.*\//,'')}
@@ -76,18 +100,16 @@ module D360
       puts "Linking files in #{repo}"
       [:database, :sphinx, :rollout].each do |file|
         existing = "#{shared_base}/#{file}.yml"
-        link = "#{repos_base}/#{repo}/spec/dummy/config/#{file}.yml"
+        link = "#{engine_repos_base}/#{repo}/spec/dummy/config/#{file}.yml"
         `rm -f #{link}`
         `ln -s #{existing} #{link}`
-        cache = "#{repos_base}/#{repo}/spec/dummy/tmp/cache"
+        cache = "#{engine_repos_base}/#{repo}/spec/dummy/tmp/cache"
         `mkdir -p #{cache}`
       end
     end
   end
 
   def bundle_install
-    repos = Dir.glob("#{repos_base}/*")
-
     repos.each do |repo|
       puts "Updating bundle in #{repo}"
       env_system("cd #{repo}; bundle install")
@@ -95,8 +117,6 @@ module D360
   end
 
   def git_develop
-    repos = Dir.glob("#{repos_base}/*")
-
     repos.each do |repo|
       puts "Updating bundle in #{repo}"
       env_system("cd #{repo} && git checkout develop && git up")
@@ -107,6 +127,10 @@ module D360
     original = Regexp.escape "gem 'rmagick', '~> 2.13.2'"
     replacement = Regexp.escape "gem 'rmagick', '~> 2.13.2', :require => false"
     puts "sed -i.bak \"s/#{original}/#{replacement}/\" Gemfile"
+  end
+
+  def patch_thinking_sphinx
+    env_exec "sed -i.bak 's/STDERR.puts.*ThinkingSphinx.*error.*$//' `bundle show thinking-sphinx`/lib/thinking_sphinx/context.rb"
   end
 
   def test
@@ -121,7 +145,8 @@ module D360
       RAILS_ENV=test bundle exec rake db:drop > log/test_setup.log
       RAILS_ENV=test bundle exec rake db:create >> log/test_setup.log
       RAILS_ENV=test bundle exec rake db:schema:load >> log/test_setup.log
-      bundle exec rspec spec/ --format documentation
+      RAILS_ENV=test bundle exec rake db:migrate >> log/test_setup.log
+      RAILS_ENV=test bundle exec rspec spec/ --format documentation
     EOC
     env_exec(commands)
   end
@@ -157,6 +182,20 @@ module D360
     env_system <<-EOC
       cd #{app_base}/d360api/repos/d360-core-api
       bundle exec rails server -p 3001 &
+    EOC
+  end
+
+  def launch_doc_api
+    env_system <<-EOC
+      cd #{app_base}/coef-doc-api/repos/coef-document-api
+      bundle exec rails server -p 3002 &
+    EOC
+  end
+
+  def launch_thinking_sphinx
+    env_system <<-EOC
+      cd #{app_base}/d360/repos/dealer360
+      bundle exec rake ts:start
     EOC
   end
 
