@@ -37,6 +37,10 @@ module D360
     "#{app_base}/d360/repos/dealer360"
   end
 
+  def nsight_base
+    "#{app_base}/d360/repos/d360-nsight"
+  end
+
   def list_databases
     puts "Available dealer databases"
     puts `mysql -uroot -e 'show databases;' | grep dealer`
@@ -126,7 +130,7 @@ module D360
   def update_gemfile
     original = Regexp.escape "gem 'rmagick', '~> 2.13.2'"
     replacement = Regexp.escape "gem 'rmagick', '~> 2.13.2', :require => false"
-    puts "sed -i.bak \"s/#{original}/#{replacement}/\" Gemfile"
+    env_system "sed -i.bak \"s/#{original}/#{replacement}/\" Gemfile"
   end
 
   def patch_thinking_sphinx
@@ -134,6 +138,7 @@ module D360
   end
 
   def test
+    update_gemfile
     commands = <<-EOC
       rm -f log/test.log
       rm -rf spec/reports/*
@@ -168,6 +173,13 @@ module D360
     env_exec(commands)
   end
 
+
+  def console
+    env_exec <<-EOS
+      cd #{dealer360_base}
+      RAILS_ENV=test bundle exec rails console
+    EOS
+  end
 
   private
 
@@ -223,6 +235,26 @@ module D360
     File.open(database_file, 'w') do |file|
       file.write database_config.to_yaml
     end
+  end
+
+end
+
+
+module Nsight
+
+  def app_base
+   '/Users/dparkhurst/dev/coef'
+  end
+
+  def nsight_base
+    "#{app_base}/d360/repos/d360-nsight"
+  end
+
+  def warmup
+    env_exec <<-EOS
+      cd #{nsight_base}
+      bundle exec rake nsight:warmup_api[7,1]
+    EOS
   end
 
 end
@@ -315,11 +347,11 @@ class QA
 
 end
 
-MODULES = ['d360']
+MODULES = ['d360','nsight']
 
 ARGV.each do |arg|
   if MODULES.include?(arg)
-    $active_module = arg.upcase
+    $active_module = arg.capitalize
     puts "Task module #{$active_module}"
     ARGV.shift
     break
