@@ -66,10 +66,10 @@ module D360
   end
 
   def start
-    launch_d360
-    launch_d360api
-    launch_doc_api
-    launch_thinking_sphinx
+    start_d360
+    start_core_api
+    start_doc_api
+    start_thinking_sphinx
   end
 
   def stop
@@ -183,28 +183,31 @@ module D360
 
   private
 
-  def launch_d360
+  def start_d360
     env_system <<-EOC
       cd #{app_base}/d360/repos/dealer360
+      rm -rf tmp/cache/*
       bundle exec rails server &
     EOC
   end
 
-  def launch_d360api
+  def start_core_api
     env_system <<-EOC
       cd #{app_base}/d360api/repos/d360-core-api
+      rm -rf tmp/cache/*
       bundle exec rails server -p 3001 &
     EOC
   end
 
-  def launch_doc_api
+  def start_doc_api
     env_system <<-EOC
       cd #{app_base}/coef-doc-api/repos/coef-document-api
+      rm -rf tmp/cache/*
       bundle exec rails server -p 3002 &
     EOC
   end
 
-  def launch_thinking_sphinx
+  def start_thinking_sphinx
     env_system <<-EOC
       cd #{app_base}/d360/repos/dealer360
       bundle exec rake ts:start
@@ -236,6 +239,21 @@ module D360
       file.write database_config.to_yaml
     end
   end
+
+
+  # def method_lengths
+  #   nsight = [Nsight::Engine, Nsight::ConvertDashboard, Nsight::UpdateDashboard,
+  #     Nsight::CreateSection, Nsight::DeleteSection, Nsight::MoveSection,
+  #     Nsight::CreatePage, Nsight::CreateDashboard, Nsight::LoadTiles,
+  #     Nsight::RetrieveDashboardSections, Nsight::LoadTile, Nsight::Dashboard,
+  #     Nsight::ApiResource, Nsight::DataPoint, Nsight::DataPointDefinition, Nsight::Tile]
+
+  #   puts
+  #   nsight.each do |source|
+  #     sizes = source.instance_methods(false).map{ |m| source.instance_method(m) }.map{ |m| m.source.split("\n").size }
+  #     puts "#{source} Avg:#{sizes.mean} Max:#{sizes.max}"
+  #   end
+  # end
 
 end
 
