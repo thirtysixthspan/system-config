@@ -2,6 +2,20 @@
 
 require 'pp'
 require 'yaml'
+require 'fileutils'
+
+module Coef
+
+  def karma
+    system('./node_modules/karma/bin/karma start spec/unit/config/karma_config.js --single-run')
+  end
+
+  def web
+    system('foreman start -f ~/system-config/bin/Procfile.coef -d .')
+  end
+
+end
+
 
 module D360
 
@@ -48,7 +62,9 @@ module D360
 
   def switch_database(name)
     switch_d360_database(name)
+    switch_d360_config(name)
     switch_d360api_database(name)
+    switch_d360api_config(name)
   end
 
   def reset_test_database
@@ -60,7 +76,7 @@ module D360
   end
 
   def logs
-    env_exec <<-EOC
+    env_system <<-EOC
       tail -f #{app_base}/d360/repos/dealer360/log/*.log #{app_base}/d360api/repos/d360-core-api/log/*.log
     EOC
   end
@@ -181,12 +197,25 @@ module D360
     EOS
   end
 
+  def fetch_config(host)
+    fetch_star_schema(host)
+    fetch_application_yml(host)
+  end
+
+  def fetch_star_schema(host)
+    env_system("scp #{host}:/www/d360api/current/config/star_schema.xml .")
+  end
+  def fetch_application_yml(host)
+    env_system("scp #{host}:/www/d360api/current/config/application.yml .")
+    puts "you must update integrations to development in application.yaml"
+  end
+
   private
 
   def start_d360
     env_system <<-EOC
       cd #{app_base}/d360/repos/dealer360
-      rm -rf tmp/cache/*
+      rm -rf tmp/cache/* tmp/cache_core_domain/*
       bundle exec rails server &
     EOC
   end
@@ -214,16 +243,90 @@ module D360
     EOC
   end
 
+
+  def download_d360_configs
+    puts "Downloading d360 config files"
+
+    environments = {
+      nmac: 'nmac-dev-nightly',
+      nna: 'd360-dev-nightly',
+      nci: 'd360-dev-nci'
+    }
+    configs = ['application.yml']
+
+    configs.each do |file|
+      environments.each do |env, server|
+        puts "Downloading #{file} in #{env} from #{server}"
+
+        local = "#{app_base}/d360/repos/dealer360/config/#{file}"
+        remote = "/www/d360/shared/#{file}"
+        `scp #{server}:#{remote} #{local}.#{env}`
+      end
+    end
+  end
+
+  def download_d360api_configs
+    puts "Downloading d360 config files"
+
+    environments = {
+      nmac: 'nmac-dev-nightly',
+      nna: 'd360-dev-nightly',
+      nci: 'd360-dev-nci'
+    }
+    configs = ['application.yml', 'star_schema.xml']
+
+    configs.each do |file|
+      environments.each do |env, server|
+        puts "Downloading #{file} in #{env} from #{server}"
+
+        local = "#{app_base}/d360api/repos/d360-core-api/config/#{file}"
+        remote = "/www/d360api/shared/#{file}"
+        `scp #{server}:#{remote} #{local}.#{env}`
+      end
+    end
+  end
+
+  def switch_d360_config(name)
+    env_config_file = "#{app_base}/d360/shared/application.yml.#{name}"
+    config_file = "#{app_base}/d360/shared/application.yml"
+
+    puts "Switching d360 development config from #{env_config_file}"
+    FileUtils.cp(env_config_file, config_file)
+  end
+
+  def switch_d360_config(name)
+    dir = "#{app_base}/d360/repos/dealer360/config"
+    files = ['application.yml']
+    files.each do |file|
+      env_config_file = "#{dir}/#{file}.#{name}"
+      config_file = "#{dir}/#{file}"
+      puts "Using d360 config: #{env_config_file}"
+      FileUtils.cp(env_config_file, config_file)
+    end
+  end
+
   def switch_d360_database(name)
     database_file = "#{app_base}/d360/shared/database.yml"
     database_config = YAML.load(File.open(database_file))
     database = database_config['development']['database']
+    database_name = "dealer360_#{name}"
 
-    puts "Switching d360 development database from #{database} to #{name}"
+    puts "Switching d360 development database from #{database} to #{database_name}"
 
-    database_config['development']['database'] = name
+    database_config['development']['database'] = database_name
     File.open(database_file, 'w') do |file|
       file.write database_config.to_yaml
+    end
+  end
+
+  def switch_d360api_config(name)
+    dir = "#{app_base}/d360api/repos/d360-core-api/config"
+    files = ['application.yml', 'star_schema.xml']
+    files.each do |file|
+      env_config_file = "#{dir}/#{file}.#{name}"
+      config_file = "#{dir}/#{file}"
+      puts "Using d360api config: #{env_config_file}"
+      FileUtils.cp(env_config_file, config_file)
     end
   end
 
@@ -231,10 +334,11 @@ module D360
     database_file = "#{app_base}/d360api/shared/database.yml"
     database_config = YAML.load(File.open(database_file))
     database = database_config['development']['database']
+    database_name = "dealer360_#{name}"
 
-    puts "Switching d360api development database from #{database} to #{name}"
+    puts "Switching d360api development database from #{database} to #{database_name}"
 
-    database_config['development']['database'] = name
+    database_config['development']['database'] = database_name
     File.open(database_file, 'w') do |file|
       file.write database_config.to_yaml
     end
@@ -365,7 +469,7 @@ class QA
 
 end
 
-MODULES = ['d360','nsight']
+MODULES = ['d360','nsight','coef']
 
 ARGV.each do |arg|
   if MODULES.include?(arg)
