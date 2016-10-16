@@ -14,6 +14,10 @@ apps=(
   skype
   karabiner
   valentina-studio
+  bettertouchtool
+  caffeine
+  paw
+  screenhero
 )
 brew tap caskroom/versions
 brew cask install --appdir="/Applications" ${apps[@]}
