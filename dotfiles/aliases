@@ -11,6 +11,7 @@ alias datavis='cd ~/dev/coef/d360/repos/coef-data-vis'
 
 alias manifold='cd ~/dev/manifold'
 
+alias top25='find . -type f -exec ls -al {} \; | sort -nr -k5 | head -n 25'
 alias gh='history | grep '
 alias pp='ps ax | grep -v grep | grep '
 
