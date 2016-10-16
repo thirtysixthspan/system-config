@@ -13,6 +13,7 @@ apps=(
   virtualbox
   skype
   karabiner
+  valentina-studio
 )
 brew tap caskroom/versions
 brew cask install --appdir="/Applications" ${apps[@]}
