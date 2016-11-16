@@ -1,4 +1,5 @@
 sudo xcodebuild -license accept
+xcode-select --install
 
 system-config/brew/install.sh
 system-config/brew/base.sh
