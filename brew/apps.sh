@@ -6,7 +6,7 @@ apps=(
   sequel-pro
   ffmpegx
   transmission
-  keepassx
+  macpass
   sublime-text
   virtualbox
   skype
