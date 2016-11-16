@@ -1,2 +1,2 @@
-cp private.xml ~/Library/Application\ Support/Karabiner/private.xml
-./karabiner-configure.sh
+cp system-config/karabiner/private.xml ~/Library/Application\ Support/Karabiner/private.xml
+./system-config/karabiner/karabiner-configure.sh

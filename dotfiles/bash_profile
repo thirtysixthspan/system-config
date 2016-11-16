@@ -2,8 +2,11 @@
 # Load bashrc
 [[ -s "$HOME/.bashrc" ]] && source "$HOME/.bashrc"
 
-# Load RVM into a shell session *as a function*
+# Ruby Version Manager
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
-export NVM_DIR=~/.nvm
-. $(brew --prefix nvm)/nvm.sh
+# Node Version Manager
+[[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"
+
+# Elixir Version Manager
+[[ -s "$HOME/.kiex/scripts/kiex" ]] && source "$HOME/.kiex/scripts/kiex"

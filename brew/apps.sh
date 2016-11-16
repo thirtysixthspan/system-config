@@ -5,11 +5,9 @@ apps=(
   iterm2
   sequel-pro
   ffmpegx
-  nmap
   transmission
   keepassx
-  omnigraffle
-  sublime-text3
+  sublime-text
   virtualbox
   skype
   karabiner

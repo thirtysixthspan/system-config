@@ -42,5 +42,7 @@ brew install openssl
 
 brew install imagemagick
 
+brew install nmap
+
 # Remove outdated versions from the cellar.
 brew cleanup

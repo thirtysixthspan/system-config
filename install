@@ -1,3 +1,5 @@
+sudo xcodebuild -license accept
+
 system-config/brew/install.sh
 system-config/brew/base.sh
 system-config/brew/apps.sh
