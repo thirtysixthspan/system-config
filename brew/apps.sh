@@ -16,6 +16,7 @@ apps=(
   caffeine
   paw
   screenhero
+  shiftit
 )
 brew tap caskroom/versions
 brew cask install --appdir="/Applications" ${apps[@]}
