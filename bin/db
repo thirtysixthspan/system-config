@@ -4,13 +4,22 @@ exit if ARGV.size<1
 
 class DB
 
+  def binary
+    { 'mysql' => 'mysqld',
+      'postgres' => 'postgres',
+      'memcache' => 'memcached',
+      'redis' => 'redis-server',
+      'mongodb' => 'mongod'
+    } 
+  end
+
   def initialize
-    @databases = %w{mysql memcache redis postgres}
+    @databases = %w{mysql memcache redis postgres mongodb}
   end
 
   def running
     @databases.each do |database|
-      puts "#{database}: #{`pgrep -l #{database}`.chomp}"
+      puts "#{database}: #{`pgrep -l #{binary[database]}`.chomp}"
     end
   end
 
@@ -28,6 +37,10 @@ class DB
 
   def start_postgres
     fork { exec 'postgres -D /usr/local/var/postgres' }
+  end
+
+  def start_mongodb
+    fork { exec 'mongod --config /usr/local/etc/mongod.conf' }
   end
 
   def start(*args)
@@ -58,6 +71,10 @@ class DB
 
   def stop_postgres
     kill('postgres')
+  end
+
+  def stop_mongodb
+    kill('mongod')
   end
 
   def stop(*args)
