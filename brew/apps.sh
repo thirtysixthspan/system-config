@@ -17,6 +17,7 @@ apps=(
   paw
   screenhero
   shiftit
+  robomongo
 )
 brew tap caskroom/versions
 brew cask install --appdir="/Applications" ${apps[@]}
