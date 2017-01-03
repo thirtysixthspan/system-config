@@ -19,6 +19,7 @@ apps=(
   shiftit
   robomongo
   jq
+  docker
 )
 brew tap caskroom/versions
 brew cask install --appdir="/Applications" ${apps[@]}
