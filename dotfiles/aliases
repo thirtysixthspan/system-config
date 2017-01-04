@@ -1,15 +1,4 @@
-alias webapp='cd /Users/dparkhurst/dev/coef/coef-web-app'
-alias openapi='cd /Users/dparkhurst/dev/coef/coef-open-api'
-alias storehub='cd /Users/dparkhurst/dev/coef/coef-store-hub'
-alias docapi='cd /Users/dparkhurst/dev/coef/coef-document-api'
-alias style='cd /Users/dparkhurst/dev/coef/coef-style'
-
-alias d360='cd ~/dev/coef/d360/repos/dealer360/'
-alias nsight='cd ~/dev/coef/d360/repos/d360-nsight'
-alias coreapi='cd ~/dev/coef/d360api/repos/d360-core-api/'
-alias datavis='cd ~/dev/coef/d360/repos/coef-data-vis'
-
-alias manifold='cd ~/dev/manifold'
+alias docker-rm-all="docker ps -a | awk '{ print $1 }' | xargs docker rm"
 
 alias top25='find . -type f -exec ls -al {} \; | sort -nr -k5 | head -n 25'
 alias gh='history | grep '
