@@ -1,4 +1,4 @@
-alias docker-rm-all="docker ps -a | awk '{ print $1 }' | xargs docker rm"
+alias docker-rm-all="docker ps -a | awk \'{ print $1 }\' | xargs docker rm"
 
 alias top25='find . -type f -exec ls -al {} \; | sort -nr -k5 | head -n 25'
 alias gh='history | grep '
