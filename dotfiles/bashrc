@@ -9,6 +9,8 @@ unset file;
 
 # Node Version Manager
 [[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"
+unset NVM_NODEJS_ORG_MIRROR
+unset NVM_IOJS_ORG_MIRROR
 
 # Elixir Version Manager
 [[ -s "$HOME/.kiex/scripts/kiex" ]] && source "$HOME/.kiex/scripts/kiex"

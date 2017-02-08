@@ -1,4 +1,6 @@
-alias docker-rm-all="docker ps -a | awk \'{ print $1 }\' | xargs docker rm"
+alias dc="docker-compose"
+docker-enter() { docker exec -i -t $1 /bin/bash; }
+docker-rm-all() { docker rm -f $(docker ps -aq); }
 
 alias top25='find . -type f -exec ls -al {} \; | sort -nr -k5 | head -n 25'
 alias gh='history | grep '

@@ -44,5 +44,8 @@ brew install imagemagick
 
 brew install nmap
 
+# Hashicorp Vault Client
+brew install vault
+
 # Remove outdated versions from the cellar.
 brew cleanup
