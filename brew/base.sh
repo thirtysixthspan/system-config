@@ -44,6 +44,9 @@ brew install imagemagick
 
 brew install nmap
 
+# Command line navigation tool
+brew install autojump
+
 # Hashicorp Vault Client
 brew install vault
 

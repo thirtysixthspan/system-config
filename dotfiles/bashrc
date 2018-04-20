@@ -4,6 +4,9 @@ for file in ~/.{path,prompt,aliases,exports,functions}; do
 done;
 unset file;
 
+# autojump command line navigation tool
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
 # Ruby Version Manager
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
