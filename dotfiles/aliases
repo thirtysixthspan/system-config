@@ -1,3 +1,6 @@
+
+alias npm_scripts="cat package.json | jq .scripts"
+
 alias dc="docker-compose"
 docker-enter() { docker exec -i -t $1 /bin/bash; }
 docker-rm-all() { docker rm -f $(docker ps -aq); }

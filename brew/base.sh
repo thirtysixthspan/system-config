@@ -47,6 +47,9 @@ brew install nmap
 # Command line navigation tool
 brew install autojump
 
+# Command line JSON parsing tool
+brew install jq
+
 # Hashicorp Vault Client
 brew install vault
 
