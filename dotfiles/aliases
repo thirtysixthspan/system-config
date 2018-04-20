@@ -1,4 +1,5 @@
 
+alias cwd="pwd | pbcopy"
 alias npm_scripts="cat package.json | jq .scripts"
 
 alias dc="docker-compose"
