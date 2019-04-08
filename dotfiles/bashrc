@@ -1,5 +1,5 @@
 
-for file in ~/.{path,prompt,aliases,exports,functions}; do
+for file in ~/.{path,prompt,aliases,exports,functions,npm_completion}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
@@ -17,3 +17,4 @@ unset NVM_IOJS_ORG_MIRROR
 
 # Elixir Version Manager
 [[ -s "$HOME/.kiex/scripts/kiex" ]] && source "$HOME/.kiex/scripts/kiex"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

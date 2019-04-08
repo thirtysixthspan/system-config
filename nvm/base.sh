@@ -1,7 +1,6 @@
 source "$HOME/.nvm/nvm.sh"
-nvm use 7
 npm install npm@latest -g
-nvm install 6
-nvm alias default 6
-nvm use 6
+nvm install 10
+nvm alias default 10
+nvm use 10
 npm install npm@latest -g

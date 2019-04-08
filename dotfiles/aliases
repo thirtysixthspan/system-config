@@ -22,15 +22,17 @@ alias webserver='ruby -run -e httpd . --port 8080'
 alias pubkey="more ~/.ssh/id_rsa.pub | pbcopy | echo '=> Public key copied to pasteboard.'"
 
 alias gs='git status'
-alias gl='git log'
-alias gau='git add -u; git add .; git status'
-gc() { git commit -m "$@"; }
-alias guc='git reset --soft HEAD^'
+alias gd='git diff'
 alias gp='git push'
+alias gl='git log'
+
+alias gds='git diff --staged'
+alias gau='git add -u; git add .; git status'
+
+gc() { git commit -m "$@"; }
 alias git_show_last_commit="git diff HEAD^ HEAD"
 alias git_step_back_one_commit="git reset HEAD~"
 alias git_rename_branch="git branch -m"
-alias git_show_staged="git diff --staged"
 alias git_log_graph="git log --graph --oneline --decorate --date-order --color --boundary @{u}"
 
 # modified files in work area
