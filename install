@@ -1,3 +1,4 @@
+// Download xcode first
 sudo xcodebuild -license accept
 xcode-select --install
 
@@ -11,13 +12,6 @@ system-config/rvm/base.sh
 system-config/nvm/install.sh
 system-config/nvm/base.sh
 
-system-config/kiex/install.sh
-system-config/kiex/base.sh
-
-system-config/eslint/install.sh
-
 rcup -d system-config/dotfiles -B Laptop -v
-
-system-config/sublime/install.sh
 
 system-config/karabiner/install.sh

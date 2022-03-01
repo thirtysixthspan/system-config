@@ -24,20 +24,18 @@ brew install bash
 brew install bash-completion
 brew install tmux reattach-to-user-namespace
 
-brew install homebrew/dupes/grep ack pv tree htop wget
+brew install grep ack pv tree htop wget
 brew install gnu-sed --with-default-names
 
 brew install node
 
 brew install mysql postgresql redis memcached sqlite
 
-brew install mplayer
+brew install --build-from-source mplayer
 
-brew install caskroom/cask/brew-cask
-
-brew install homebrew/dupes/apple-gcc42
-brew install homebrew/dupes/make
-brew install homebrew/dupes/unzip
+brew install apple-gcc42
+brew install make
+brew install unzip
 brew install openssl
 
 brew install imagemagick
@@ -52,6 +50,8 @@ brew install jq
 
 # Hashicorp Vault Client
 brew install vault
+
+brew install nginx
 
 # Remove outdated versions from the cellar.
 brew cleanup

@@ -5,7 +5,7 @@ done;
 unset file;
 
 # autojump command line navigation tool
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
 # Ruby Version Manager
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
@@ -15,6 +15,5 @@ unset file;
 unset NVM_NODEJS_ORG_MIRROR
 unset NVM_IOJS_ORG_MIRROR
 
-# Elixir Version Manager
-[[ -s "$HOME/.kiex/scripts/kiex" ]] && source "$HOME/.kiex/scripts/kiex"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# use brew provided gnu tools
+PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
