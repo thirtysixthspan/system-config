@@ -13,5 +13,3 @@ system-config/nvm/install.sh
 system-config/nvm/base.sh
 
 rcup -d system-config/dotfiles -B Laptop -v
-
-system-config/karabiner/install.sh

@@ -1,6 +1,3 @@
-function who_wrote_this_code { find $1 \( ! -regex '.*/\..*' \) -name '*.rb' -type f -print -exec git blame '{}' \; | ruby -pe "sub /(^.*\((.*?)\s+2.*$)/, '\2'" | egrep -vE '[[:punct:][:digit:]]' | sort | uniq -c | sort -nr; }
-
-function open_gem { sublime `bundle show $1` ; }
 
 # ghf - [G]rep [H]istory [F]or top ten commands and execute one
 # usage:
@@ -22,4 +19,12 @@ function ghf {
   if [ $# -eq 2 ]; then
     `grepped-history "$1" | unique-history | grep ^$2 | chop-first-column`;
   fi
+}
+
+function fetch_all_git_repos {
+  find . -name .git -type d -exec bash -c 'echo "updating {}"; sleep 5; git --git-dir "{}" fetch --all;' \;
+}
+
+function remove_node_modules {
+  find . -name node_modules -type d -exec rm -rfv "{}" \;
 }

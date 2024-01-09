@@ -2,12 +2,12 @@ apps=(
   google-chrome
   firefox
   iterm2
-  sequel-pro
   ffmpeg
   macpass
   sublime-text
+  visual-studio-code
   karabiner
-  valentina-studio
+  dbgate
   bettertouchtool
   caffeine
   rectangle

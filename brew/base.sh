@@ -48,9 +48,6 @@ brew install autojump
 # Command line JSON parsing tool
 brew install jq
 
-# Hashicorp Vault Client
-brew install vault
-
 brew install nginx
 
 # Remove outdated versions from the cellar.

@@ -9,3 +9,4 @@ tmp/**/*
 !tmp/cache/.keep
 zeus.json
 spec/dummy/db/schema.rb
+.vscode

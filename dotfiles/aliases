@@ -1,31 +1,14 @@
 
-alias cwd="pwd | pbcopy"
 alias npm_scripts="cat package.json | jq .scripts"
 
-alias dc="docker-compose"
-docker-enter() { docker exec -i -t $1 /bin/bash; }
-docker-rm-all() { docker rm -f $(docker ps -aq); }
-
-alias top25='find . -type f -exec ls -al {} \; | sort -nr -k5 | head -n 25'
 alias gh='history | grep '
 alias pp='ps ax | grep -v grep | grep '
-
-alias be='bundle exec'
-alias bi='bundle install'
-
-alias ggrep_all="git rev-list --all | xargs git grep"
-alias pp='ps ax | grep -v grep | grep '
-alias sussh='eval `ssh-agent`;ssh-add '
-alias publish="ssh thirtysixthspan 'cd thirtysixthspan.com; git pull; php artisan db:seed'"
-
-alias webserver='ruby -run -e httpd . --port 8080'
-alias pubkey="more ~/.ssh/id_rsa.pub | pbcopy | echo '=> Public key copied to pasteboard.'"
 
 alias gs='git status'
 alias gd='git diff'
 alias gp='git push'
 alias gl='git log'
-
+alias glf="git log --format='format: * %s (%an: %ad) [%h]' --no-merges"
 alias gds='git diff --staged'
 alias gau='git add -u; git add .; git status'
 
@@ -34,34 +17,6 @@ alias git_show_last_commit="git diff HEAD^ HEAD"
 alias git_step_back_one_commit="git reset HEAD~"
 alias git_rename_branch="git branch -m"
 alias git_log_graph="git log --graph --oneline --decorate --date-order --color --boundary @{u}"
-
-# modified files in work area
-alias gmf='git ls-files -m'
-# untracked files in work area
-alias guf='git ls-files --others --exclude-standard'
-# work files - unstaged files in work area
-alias gwf='git ls-files -m; git ls-files --others --exclude-standard'
-# working specs - spec files in work area that are not yet committed
-alias gws='(git ls-files -m; git ls-files --others --exclude-standard) | egrep "_spec.rb$"'
-# branch specs - committed spec files in current branch but not in master
-alias gbs='git log --name-status master.. |egrep "^[MA].+spec.rb$" |cut -f2 | uniq | sed "s/hr_suite\///"'
-# run working specs through rspec
-alias rspec_working='echo "Running the following working specs" ; echo `gws` | tr " " "\n" ; echo ; bundle exec rspec `gws`'
-# run branch specs through rspec
-alias rspec_branch='echo "Running the following branch specs" ; echo `gbs` | tr " " "\n" ; echo ; bundle exec rspec `gbs`'
-
-# git log formatted
-alias glf="git log --format='format: * %s (%an: %ad) [%h]' --no-merges"
-
-function who_wrote_this_code { find $1 \( ! -regex '.*/\..*' \) -name '*.rb' -type f -print -exec git blame '{}' \; | ruby -pe "sub /(^.*\((.*?)\s+2.*$)/, '\2'" | egrep -vE '[[:punct:][:digit:]]' | sort | uniq -c | sort -nr; }
-
-
-alias kill_bundle="ps aux | grep 'bundle exec' | grep -v 'grep' | awk '{print $2}' | xargs kill -9"
-alias kill_rails="ps aux | grep 'rails s' | grep -v 'grep' | awk '{print $2}' | xargs kill -9"
-alias kill_ruby="ps aux | grep 'ruby' | grep -v 'grep' | awk '{print $2}' | xargs kill -9"
-alias kill_resque="ps aux | grep 'resqu' | grep -v 'grep' | awk '{print $2}' | xargs kill -9"
-
-alias find_changed_files_linux="find . -type f -printf '%TY-%Tm-%Td %TT %p\n' | sort -r | more"
 
 
 # Detect which `ls` flavor is in use

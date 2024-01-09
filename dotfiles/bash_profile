@@ -10,7 +10,3 @@
 unset NVM_NODEJS_ORG_MIRROR
 unset NVM_IOJS_ORG_MIRROR
 export NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
-
-# Elixir Version Manager
-[[ -s "$HOME/.kiex/scripts/kiex" ]] && source "$HOME/.kiex/scripts/kiex"
-eval "$(/opt/homebrew/bin/brew shellenv)"
