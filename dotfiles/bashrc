@@ -15,7 +15,7 @@ unset file;
 unset NVM_NODEJS_ORG_MIRROR
 unset NVM_IOJS_ORG_MIRROR
 
-# use brew provided gnu tools
-PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
+# use brew
+PATH="/opt/homebrew/bin:/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 
 export TERM=xterm
