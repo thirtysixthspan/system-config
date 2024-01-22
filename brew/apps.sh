@@ -6,9 +6,7 @@ apps=(
   macpass
   sublime-text
   visual-studio-code
-  karabiner
   dbgate
-  bettertouchtool
   caffeine
   rectangle
 )

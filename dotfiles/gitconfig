@@ -9,6 +9,7 @@
 [core]
   excludesfile = ~/.gitexcludes
   ignorecase = false
+	editor = nano
 [credential]
   helper = osxkeychain
 [help]
