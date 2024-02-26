@@ -9,5 +9,6 @@ apps=(
   dbgate
   caffeine
   rectangle
+  karabiner-elements
 )
 brew install --appdir="/Applications" ${apps[@]}
