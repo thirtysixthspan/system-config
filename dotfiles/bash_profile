@@ -2,9 +2,6 @@
 # Load bashrc
 [[ -s "$HOME/.bashrc" ]] && source "$HOME/.bashrc"
 
-# Ruby Version Manager
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
 # Node Version Manager
 [[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"
 unset NVM_NODEJS_ORG_MIRROR

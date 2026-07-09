@@ -1,23 +1,6 @@
 
 alias npm_scripts="cat package.json | jq .scripts"
-
-alias gh='history | grep '
-alias pp='ps ax | grep -v grep | grep '
-
 alias gs='git status'
-alias gd='git diff'
-alias gp='git push'
-alias gl='git log'
-alias glf="git log --format='format: * %s (%an: %ad) [%h]' --no-merges"
-alias gds='git diff --staged'
-alias gau='git add -u; git add .; git status'
-
-gc() { git commit -m "$@"; }
-alias git_show_last_commit="git diff HEAD^ HEAD"
-alias git_step_back_one_commit="git reset HEAD~"
-alias git_rename_branch="git branch -m"
-alias git_log_graph="git log --graph --oneline --decorate --date-order --color --boundary @{u}"
-
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`

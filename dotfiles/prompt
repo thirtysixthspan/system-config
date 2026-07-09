@@ -1,11 +1,4 @@
 
-tmux_name_window_cwd() {
-  if [ "$PWD" != "$LPWD" ]; then
-    LPWD="$PWD"; tmux rename-window ${PWD//*\//};
-  fi
-}
-export PROMPT_COMMAND=tmux_name_window_cwd
-
 function _git_prompt() {
     local git_status=$(git status 2>&1)
     if [[ $git_status =~ "Not a git repository" ]]; then return; fi

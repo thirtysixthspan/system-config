@@ -1,14 +1,10 @@
-
-for file in ~/.{path,prompt,aliases,exports,functions,npm_completion}; do
+for file in ~/.{path,prompt,aliases,exports,functions}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
 
 # autojump command line navigation tool
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
-
-# Ruby Version Manager
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
 # Node Version Manager
 [[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"
@@ -19,3 +15,14 @@ unset NVM_IOJS_ORG_MIRROR
 PATH="/opt/homebrew/bin:/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 
 export TERM=xterm
+
+export PATH=/Users/ashmorgan/.local/bin:$PATH
+
+# opencode
+export PATH=/Users/ashmorgan/.opencode/bin:$PATH
+
+# opengrep
+export PATH=/Users/ashmorgan/.opengrep/cli/latest:$PATH
+
+
+
