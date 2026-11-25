@@ -11,4 +11,4 @@ apps=(
   rectangle
   karabiner-elements
 )
-brew install --appdir="/Applications" ${apps[@]}
+echo "just install $apps manually"

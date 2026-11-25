@@ -68,3 +68,5 @@
   required = true
 [color "sh"]
   dirty = red
+[http]
+	postBuffer = 157286400

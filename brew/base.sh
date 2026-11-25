@@ -14,41 +14,23 @@ brew update
 # Upgrade any already-installed formulae.
 brew upgrade
 
-brew install git hub thoughtbot/formulae/rcm
+brew install git hub rcm
 
 brew install coreutils
 brew install moreutils
 brew install findutils
 
-brew install bash
-brew install bash-completion
 brew install tmux reattach-to-user-namespace
 
 brew install grep ack pv tree htop wget
 brew install gnu-sed --with-default-names
 
-brew install node
+brew install nvm
 
-brew install mysql postgresql redis memcached sqlite
-
-brew install --build-from-source mplayer
-
-brew install apple-gcc42
-brew install make
 brew install unzip
-brew install openssl
-
 brew install imagemagick
-
 brew install nmap
-
-# Command line navigation tool
 brew install autojump
-
-# Command line JSON parsing tool
 brew install jq
 
-brew install nginx
-
-# Remove outdated versions from the cellar.
 brew cleanup
